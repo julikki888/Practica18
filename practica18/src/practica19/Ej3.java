@@ -1,7 +1,12 @@
 package practica19;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -24,9 +29,10 @@ public class Ej3 extends JFrame{
 		Container contenPane = this.getContentPane();
 		
 		JPanel pCentro = new JPanel();
-		JPanel pOeste = new JPanel();
+		JPanel pOeste = new JPanel(new GridLayout(4,1,5,15));
 		
 		ta = new JTextArea();
+		ta.setEditable(false);
 		
 		cbMelon = new JCheckBox("Melon");
 		cbNaranja = new JCheckBox("Naranja");
@@ -39,15 +45,39 @@ public class Ej3 extends JFrame{
 		pOeste.add(cbManzana);
 		
 		JScrollPane sp = new JScrollPane(ta);
+		sp.setPreferredSize(new Dimension(200,200));
 		
 		pCentro.add(sp);
 		
+		contenPane.add(pOeste,BorderLayout.WEST);
+		contenPane.add(pCentro,BorderLayout.CENTER);
 		
+		itemListener it = new itemListener();
+		
+		cbMelon.addItemListener(it);
+		cbNaranja.addItemListener(it);
+		cbPlatano.addItemListener(it);
+		cbManzana.addItemListener(it);
+
+	}
+	
+	class itemListener implements ItemListener{
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			
+			JCheckBox item = (JCheckBox) e.getSource();
+			
+			
+			ta.append("Componente: "+item.getText()
+						+ "\nEstado actual: "+ item.isSelected()
+						+ "\nEstado actual: "+ e.getStateChange()
+						+ "\n"+(e.getStateChange()==ItemEvent.SELECTED?"Seleccionado\n":"No Seleccionado\n"));
+		}
 		
 	}
 	
-	
-	
+
 	public static void main(String[] args) {
 		
 		Ej3 gui = new Ej3();
